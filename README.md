@@ -4,13 +4,18 @@
 
 ## (사용방법)
 
-####  vscode에서 explorer을(ctrl + shift + E) 연다.
+####  1. vscode에서 explorer을(ctrl + shift + E) 연다.
 
-####  index.html을 우클릭, open with live server 을 누른다
+####  2. index.html을 우클릭, open with live server 을 누른다
 
-####  새로운 창이 뜨며, p5.js에서 run한것과 같은 것을 볼수있다.
+####  3. 새로운 창이 뜨며, p5.js에서 run한것과 같은 것을 볼수있다.
 
-## * 주의사항
+## * 주의사항 *
 
 #### 해당프로젝트가 끝난 후에는 다음 과제 제출을 위해 내용을 삭제할 예정이오니
 #### 파일이 필요하다면 과제 제출후 3일 안에 따로 저장하시길 바랍니다.
+
+## 참고
+
+###### https://www.toptal.com/developers/keycode
+###### http://www.n2n.pe.kr/lev-1/color.htm
