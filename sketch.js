@@ -45,13 +45,13 @@ function draw() {
       pickLocation(2)
       //special(random(1,4));
     }
-    fill("yellow");
+    fill("yellow"); //food 의 색상과 모양 설정
     ellipse(food.x + scl / 2, food.y + scl / 2, scl, scl);
-    fill("lime"); // 아이템의 색상 설정
+    fill("lime"); // 아이템의 색상 모양 설정
     ellipse(item.x + scl / 2, item.y + scl / 2, scl, scl);
-    textSize(15);
+    textSize(15);//타이머 글자
     fill(255);
-    text(timer, 300, 300);
+    text(timer, 290, 300);
     timer --;
   }
   if (timer == 0) {// 게임 종료 화면
@@ -102,6 +102,25 @@ function pickLocation(x) {
       return;
     }
   }
+
+// Check the item isn't appearing instide the tail
+
+  for (let i = 0; i < s.tail.length; i++) {
+    let ipos = s.tail[i];
+    let id = dist(item.x, item.y, ipos.x, ipos.y);
+    if (id < 1) {
+      pickLocation(1);
+      return;
+    }
+  }
+  for (let i = 0; i < s2.tail.length; i++) {
+    let ipos2 = s2.tail[i];
+    let id2 = dist(item.x, item.y, ipos2.x, ipos2.y);
+    if (id2 < 1) {
+      pickLocation(1);
+      return;
+    }
+  }
 }
 
 // scoreboard
@@ -124,6 +143,7 @@ function scoreboard() {
   text(s2.score, 370, 625);
   text("Highscore: ", 400, 625);
   text(s2.highscore, 500, 625);
+  
 }
 
 // CONTROLS function
@@ -178,20 +198,30 @@ function Snake(x, y) {
             if (this === s || this === s2) { // 현재 객체가 s 또는 s2일 때
                 let rand = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
               if (rand == 1) { // 랜덤하게 하나의 동작 선택 ,그 중 점수2점
-                    this.score += 2; // 자신의 점수 증가
+                this.score += 2; // 자신의 점수 증가
+                this.total++;
+                if (this.score > this.highscore) {
+                  this.highscore = this.score;
+                }
               }
               else if(rand == 2){// 상대의 점수 감소
-                if (this === s && s2.score > 0) {
+                if (this === s && s2.score > 1) {
                   s2.score --; // s의 상대 점수 감소
-                } else if (this === s2 && s.score > 0) {
+                } else if (this === s2 && s.score > 1) {
                   s.score --; // s2의 상대 점수 감소
                 }
               }
               else if(rand == 3){//자신의 꼬리 짧게 하기
                 if (this === s) {
-                  s.total-= 2; // s의 꼬리짧아지기 ? 꼬리가 떨어져나감
+                  if(s.tail.length > 0){
+                    s.tail = s.tail.filter((item, index) => index < s.tail.length - 1);
+                    s.total--;
+                  }
                 } else if (this === s2) {
-                  s2.total -= 2; // s2의 꼬리짧아지기 ? 꼬리가 떨어져나감
+                  if(s2.tail.length > 0){
+                    s2.tail = s2.tail.filter((item, index) => index < s2.tail.length - 1);
+                    s2.total--;
+                  }
                 }
               }
               else if(rand == 4){//상대방 꼬리증가
@@ -200,20 +230,16 @@ function Snake(x, y) {
                 } else if (this === s2) {
                   s2.total++; // s2의 상대 꼬리 증가
                 }
-                      }
-            }
-            this.total++;
-            if (this.score > this.highscore) {
-                this.highscore = this.score;
+              }
             }
             return true;
         }
     }
     return false;
   }
-  this.death = function() {
-    if(this === s){//s1 게임종료건조건
-      for(let i = 0; i < s.tail.length; i++){
+  this.death = function() {//캐릭터 초기화 조건
+    if(this === s){//s1초기화
+      for(let i = 0; i < s.tail.length; i++){//자신한테 
         let s1pos1 = s.tail[i];
         let s1d1 = dist(s.x, s.y, s1pos1.x, s1pos1.y);
         if (s1d1 < 1) {
@@ -222,7 +248,7 @@ function Snake(x, y) {
           this.tail = [];
         }
       }
-      for(let i = 0; i < s2.tail.length; i++){
+      for(let i = 0; i < s2.tail.length; i++){//s2한테 충돌
         let s1pos2 = s2.tail[i];
         let s1d2 = dist(s.x, s.y, s1pos2.x, s1pos2.y);
         if (s1d2 < 1) {
@@ -232,8 +258,8 @@ function Snake(x, y) {
         }
       }
   }
-  if(this === s2){//s2 게임종료 조건
-      for(let i = 0; i < s2.tail.length; i++){
+  if(this === s2){//s2초기화
+      for(let i = 0; i < s2.tail.length; i++){//자신한테 충돌
         let s2pos1 = s2.tail[i];
         let s2d1 = dist(s2.x, s2.y, s2pos1.x, s2pos1.y);
         if (s2d1 < 1) {
@@ -242,7 +268,7 @@ function Snake(x, y) {
           this.tail = [];
         }
       }
-      for(let i = 0; i < s.tail.length; i++){
+      for(let i = 0; i < s.tail.length; i++){//s한테 충돌
         let s2pos2 = s.tail[i];
         let s2d2 = dist(s2.x, s2.y, s2pos2.x, s2pos2.y);
         if (s2d2 < 1) {
