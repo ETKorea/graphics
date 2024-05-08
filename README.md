@@ -2,7 +2,7 @@
 
 #### 해당 프로젝트를 git desktop에 받은 후 vscode에서 편집하시면됩니다.
 
-#### (사용방법)
+#### 사용방법
 - 1. vscode에서 explorer을(ctrl + shift + E) 연다.
 - 2. index.html을 우클릭, open with live server 을 누른다
 - 3. 새로운 창이 뜨며, p5.js에서 run한것과 같은 것을 볼수있다.
